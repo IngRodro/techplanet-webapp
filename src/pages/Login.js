@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import SignIcon from "../components/SignIcon";
 import { MdLockOutline, MdOutlineMail } from "react-icons/md";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import summaryApi from "../common";
+import { toast } from "react-toastify";
+import Context from "../context";
+
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,6 +14,10 @@ const Login = () => {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+
+  const { fetchUserDetails } = useContext(Context)
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -22,8 +30,34 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    e.preventDefault()
+
+        const dataResponse = await fetch(summaryApi.signIn.url,{
+            method : summaryApi.signIn.method,
+            credentials : 'include',
+            headers : {
+                "content-type" : "application/json"
+            },
+            body : JSON.stringify(data)
+        })
+
+        const dataApi = await dataResponse.json()
+        console.log(dataApi)
+
+        if(dataApi.success){
+            console.log(dataApi)
+            toast.success(dataApi.message)
+            navigate('/')
+            fetchUserDetails()
+        }
+
+        if(dataApi.error){
+            console.log(dataApi)
+            toast.error(dataApi.message)
+        }
 
   }
 

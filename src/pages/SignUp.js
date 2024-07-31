@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import SignIcon from "../components/SignIcon";
 import { MdLockOutline, MdOutlineMail } from "react-icons/md";
 import { HiIdentification } from "react-icons/hi";
+import summaryApi from "../common";
+import imageToBase64 from "../helpers/imageToBase64";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,7 +16,8 @@ const SignUp = () => {
     password: "",
     name: "",
     confirmPassword: "",
-  })
+    profilePic: "",
+  });
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -26,10 +30,50 @@ const SignUp = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleUploadPic = async (e) => {
+    const file = e.target.files[0];
 
-  }
+    const imagePic = await imageToBase64(file);
+
+    console.log(imagePic);
+
+    setData((preve) => {
+      return {
+        ...preve,
+        profilePic: imagePic,
+      };
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { password, confirmPassword } = data;
+
+    if (password === confirmPassword) {
+      const { url, method } = summaryApi.signUp;
+
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(response.json());
+      if(response.status === 201){
+        setData({
+          email: "",
+          password: "",
+          name: "",
+          confirmPassword: "",
+          profilePic: "",
+        });
+      }
+    } else {
+      alert("Error");
+      toast.error("Please check password and confirm password");
+    }
+  };
 
   return (
     <section id="signup">
@@ -37,7 +81,11 @@ const SignUp = () => {
         <div className="bg-slate-50 p-5 w-full max-w-sm mx-auto">
           <div className="w-20 h-20 mx-auto relative overflow-hidden rounded-full">
             <div className="h-20 w-20 mx-auto">
-              <SignIcon color={"#1d4ed8"} />
+              {data.profilePic ? (
+                <img src={data.profilePic} alt="Profile"></img>
+              ) : (
+                <SignIcon color={"#1d4ed8"} />
+              )}
             </div>
             <form>
               <label>
@@ -47,13 +95,17 @@ const SignUp = () => {
                 <input
                   type="file"
                   className="hidden"
+                  onChange={handleUploadPic}
                 />
               </label>
             </form>
           </div>
 
-          <form className="pt-6 flex flex-col gap-6 mx-2" onSubmit={handleSubmit}>
-          <div className="flex items-center w-full justify-center border focus-within:shadow-sm">
+          <form
+            className="pt-6 flex flex-col gap-6 mx-2"
+            onSubmit={handleSubmit}
+          >
+            <div className="flex items-center w-full justify-center border focus-within:shadow-sm">
               <div className="text-lg min-w-[40px] h-8 bg-blue-700 flex items-center justify-center">
                 <HiIdentification color="white" />
               </div>
@@ -128,7 +180,9 @@ const SignUp = () => {
 
           <div className="flex items-center w-full max-w-md">
             <div class="flex-grow border-t border-blue-600"></div>
-              <Link to={'/login'}className="text-blue-700 hover:underline mx-6">Acceder</Link>
+            <Link to={"/login"} className="text-blue-700 hover:underline mx-6">
+              Acceder
+            </Link>
             <div class="flex-grow border-t border-blue-600"></div>
           </div>
         </div>
