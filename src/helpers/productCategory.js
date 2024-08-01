@@ -31,6 +31,7 @@ const productCategory = [
   { id: 30, label: "Componentes de PC", value: "pc_components" },
   { id: 31, label: "Fuentes de Alimentación", value: "power_supplies" },
   { id: 32, label: "Sillas para Gaming", value: "gaming_chairs" },
+  { id: 33, label: "Placas Madre", value: "motherboards"}
 ];
 
 export default productCategory;
