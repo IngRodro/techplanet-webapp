@@ -66,7 +66,7 @@ const HorizontalCardProduct = ({ category, heading }) => {
         </button>
 
         {loading
-          ? loadingList.map((product, index) => {
+          ? loadingList.map(() => {
               return (
                 <div className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] h-36 bg-white rounded-sm shadow flex">
                   <div className="bg-slate-200 h-full p-4 min-w-[120px] md:min-w-[145px] animate-pulse"></div>
@@ -88,11 +88,11 @@ const HorizontalCardProduct = ({ category, heading }) => {
                   to={"product/" + product?.id}
                   className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] h-36 bg-white rounded-sm shadow flex"
                 >
-                  <div className="bg-slate-200 h-full p-4 min-w-[120px] md:min-w-[145px]">
+                  <div className="bg-slate-200 h-full min-w-[120px] md:min-w-[145px]">
                     <img
                       src={product.productImages[0].secure_url}
                       alt=""
-                      className="object-scale-down h-full hover:scale-110 transition-all"
+                      className="w-full object-scale-down h-full hover:scale-110 transition-all"
                     />
                   </div>
                   <div className="p-4 grid">
