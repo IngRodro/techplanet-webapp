@@ -45,17 +45,14 @@ const Login = () => {
         })
 
         const dataApi = await dataResponse.json()
-        console.log(dataApi)
 
         if(dataApi.success){
-            console.log(dataApi)
             toast.success(dataApi.message)
             navigate('/')
             fetchUserDetails()
         }
 
         if(dataApi.error){
-            console.log(dataApi)
             toast.error(dataApi.message)
         }
 
@@ -113,14 +110,14 @@ const Login = () => {
             </button>
           </form>
           <div className="flex items-center w-full max-w-md">
-            <div class="flex-grow border-t border-blue-600"></div>
+            <div className="flex-grow border-t border-blue-600"></div>
             <Link
               to={"/sign-up"}
               className="text-blue-700 hover:underline mx-6"
             >
               Regístrate
             </Link>
-            <div class="flex-grow border-t border-blue-600"></div>
+            <div className="flex-grow border-t border-blue-600"></div>
           </div>
         </div>
       </div>

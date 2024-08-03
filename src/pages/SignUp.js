@@ -35,8 +35,6 @@ const SignUp = () => {
 
     const imagePic = await imageToBase64(file);
 
-    console.log(imagePic);
-
     setData((preve) => {
       return {
         ...preve,
@@ -59,7 +57,6 @@ const SignUp = () => {
         },
         body: JSON.stringify(data),
       });
-      console.log(response.json());
       if(response.status === 201){
         setData({
           email: "",
@@ -179,11 +176,11 @@ const SignUp = () => {
           </form>
 
           <div className="flex items-center w-full max-w-md">
-            <div class="flex-grow border-t border-blue-600"></div>
+            <div className="flex-grow border-t border-blue-600"></div>
             <Link to={"/login"} className="text-blue-700 hover:underline mx-6">
               Acceder
             </Link>
-            <div class="flex-grow border-t border-blue-600"></div>
+            <div className="flex-grow border-t border-blue-600"></div>
           </div>
         </div>
       </div>

@@ -25,13 +25,10 @@ const CategoryList = () => {
           };
         });
         setCategoryProduct(mappedData);
-        console.log("Mapped Data", mappedData)
       } else {
-        console.error("Error al obtener los datos de la API");
         setCategoryProduct([]);
       }
     } catch (error) {
-      console.error("Error en la solicitud:", error);
       setCategoryProduct([]);
     }
     setLoading(false);
@@ -42,8 +39,8 @@ const CategoryList = () => {
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex items-center gap-4 justify-between overflow-scroll scrollbar-none">
+    <div className="container mx-auto h-48 p-4">
+      <div className="flex items-center justify-between overflow-scroll scrollbar-none">
         {loading
           ? categoryLoading.map((el, index) => {
               return (
@@ -60,7 +57,7 @@ const CategoryList = () => {
                   className="cursor-pointer items-center justify-center flex flex-col max-w-28"
                   key={product?.category}
                 >
-                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden p-4 bg-slate-200 flex items-center justify-center">
+                  <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden bg-slate-50 flex items-center justify-center">
                     <img
                       src={product?.productImages[0]?.secure_url}
                       alt={product?.categoryLabel}

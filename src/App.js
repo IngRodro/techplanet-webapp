@@ -6,12 +6,13 @@ import summaryApi from "./common";
 import Context from "./context";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "./store/userSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 
 function App() {
   const dispatch = useDispatch();
+  const [cartProductCount,setCartProductCount] = useState(0)
 
   const fetchUserDetails = async () => {
     const dataResponse = await fetch(summaryApi.currentUser.url, {
@@ -26,7 +27,19 @@ function App() {
     }
   };
 
+  const fetchUserCartCount = async()=>{
+    const dataResponse = await fetch(summaryApi.getCartProductCount.url,{
+      method : summaryApi.getCartProductCount.method,
+      credentials : 'include'
+    })
+
+    const dataApi = await dataResponse.json()
+
+    setCartProductCount(dataApi?.data?.count)
+  }
+
   useEffect(() => {
+    fetchUserCartCount();
     fetchUserDetails();
   });
 
@@ -35,6 +48,8 @@ function App() {
       <Context.Provider
         value={{
           fetchUserDetails,
+          cartProductCount,
+          fetchUserAddToCart: fetchUserCartCount
         }}
       >
         <ToastContainer

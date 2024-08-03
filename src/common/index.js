@@ -1,4 +1,4 @@
-const backendDomain = process.env.REACT_APP_API_URL
+const backendDomain = process.env.REACT_APP_API_URL;
 
 const summaryApi = {
   signUp: {
@@ -38,8 +38,44 @@ const summaryApi = {
     method: "put",
   },
   categoryProduct: {
-    url: `${backendDomain}/v1/products/get-category-product`,
+    url: `${backendDomain}/v1/products/get-categories`,
     method: "get",
+  },
+  productByCategory: {
+    url: `${backendDomain}/v1/products/products-by-category`,
+    method: "post",
+  },
+  productDetails: {
+    url: `${backendDomain}/v1/products/get-details`,
+    method: "post",
+  },
+  addToCartProduct: {
+    url: `${backendDomain}/v1/cart/add-cart`,
+    method: "post",
+  },
+  getCartProductCount: {
+    url: `${backendDomain}/v1/cart/count-add`,
+    method: "get",
+  },
+  getCartProducts: {
+    url: `${backendDomain}/v1/cart/cart-products`,
+    method: "get",
+  },
+  updateCartProduct: {
+    url: `${backendDomain}/v1/cart/update-cart-product`,
+    method: "put",
+  },
+  deleteCartProduct: {
+    url: `${backendDomain}/v1/cart/delete-cart-product`,
+    method: "delete",
+  },
+  searchProduct: {
+    url: `${backendDomain}/v1/products/search-products`,
+    method: "get",
+  },
+  filterProduct: {
+    url: `${backendDomain}/v1/products/filter-products`,
+    method: "post",
   },
 };
 
