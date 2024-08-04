@@ -22,7 +22,7 @@ const HorizontalCardProduct = ({ category, heading }) => {
   const { fetchUserAddToCart } = useContext(Context);
 
   const handleAddToCart = async (e, id) => {
-    await addToCart(e,id)
+    await addToCart(e, id);
     fetchUserAddToCart();
   };
 
@@ -71,7 +71,9 @@ const HorizontalCardProduct = ({ category, heading }) => {
                 <div className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] h-36 bg-white rounded-sm shadow flex">
                   <div className="bg-slate-200 h-full p-4 min-w-[120px] md:min-w-[145px] animate-pulse"></div>
                   <div className="p-4 grid w-full gap-2">
-                    <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black bg-slate-200 animate-pulse p-1 rounded-full">Content</h2>
+                    <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black bg-slate-200 animate-pulse p-1 rounded-full">
+                      Content
+                    </h2>
                     <p className="capitalize text-slate-500 p-1 bg-slate-200 animate-pulse rounded-full"></p>
                     <div className="flex gap-3 w-full">
                       <p className="text-red-600 font-medium p-1 bg-slate-200 w-full animate-pulse rounded-full"></p>
@@ -106,15 +108,17 @@ const HorizontalCardProduct = ({ category, heading }) => {
                       <p className="text-red-600 font-medium">
                         {displayCurrency(product?.sellingPrice)}
                       </p>
-                      <p className="text-slate-500 line-through">
-                        {displayCurrency(product?.price)}
-                      </p>
+                      {product?.sellingPrice !== product?.price ? (
+                        <p className="text-slate-500 line-through">
+                          {displayCurrency(product?.price)}
+                        </p>
+                      ) : null}
                     </div>
                     <button
                       className="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-0.5 rounded-full"
                       onClick={(e) => handleAddToCart(e, product?.id)}
                     >
-                      Add to Cart
+                      Agregar al Carrito
                     </button>
                   </div>
                 </Link>

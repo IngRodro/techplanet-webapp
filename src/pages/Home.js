@@ -18,7 +18,7 @@ const Home = () => {
       <VerticalCardProduct
         category={"graphics_cards"}
         brand={"NVIDIA"}
-        heading={"Ofertas en Tarjetas Graficas NVIDIA"}
+        heading={"Ofertas en Tarjetas Gráficas NVIDIA"}
       />
     </>
   );

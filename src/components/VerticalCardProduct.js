@@ -25,7 +25,6 @@ const VerticalCardProduct = ({ category, heading, brand }) => {
     setLoading(true);
     const categoryProduct = await fetchProductByCategory(category, brand);
     setLoading(false);
-
     setData(() => {
       return categoryProduct?.data.map((product) => {
         return {
@@ -109,15 +108,17 @@ const VerticalCardProduct = ({ category, heading, brand }) => {
                       <p className="text-red-600 font-medium">
                         {displayCurrency(product?.sellingPrice)}
                       </p>
-                      <p className="text-slate-500 line-through">
-                        {displayCurrency(product?.price)}
-                      </p>
+                      { product?.sellingPrice !== product?.price ? (
+                        <p className="text-slate-500 line-through">
+                          {displayCurrency(product?.price)}
+                        </p>
+                      ): null }
                     </div>
                     <button
                       className="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-0.5 rounded-full"
                       onClick={(e) => handleAddToCart(e, product?.id)}
                     >
-                      Add to Cart
+                      Agregar al Carrito
                     </button>
                   </div>
                 </Link>
