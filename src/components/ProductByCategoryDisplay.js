@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import fetchProductByCategory from "../helpers/fetchProductByCategory";
-import displayINRCurrency from "../helpers/displayCurrency";
+import displayCurrency from "../helpers/displayCurrency";
 import { Link } from "react-router-dom";
 import Context from "../context";
 import scrollTop from "../helpers/scrollTop";
@@ -74,10 +74,10 @@ const ProductByCategoryDisplay = ({ category, heading }) => {
                     </p>
                     <div className="flex gap-3">
                       <p className="text-red-600 font-medium">
-                        {displayINRCurrency(product?.sellingPrice)}
+                        {displayCurrency(product?.sellingPrice)}
                       </p>
                       <p className="text-slate-500 line-through">
-                        {displayINRCurrency(product?.price)}
+                        {displayCurrency(product?.price)}
                       </p>
                     </div>
                     <button

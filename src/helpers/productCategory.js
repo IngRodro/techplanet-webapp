@@ -1,4 +1,4 @@
-const productCategory = [
+export const productCategory = [
   { id: 1, label: "Auriculares inalámbricos", value: "wireless_headphones" },
   { id: 2, label: "Cámaras", value: "cameras" },
   { id: 3, label: "Auriculares", value: "headphones" },
@@ -34,4 +34,7 @@ const productCategory = [
   { id: 33, label: "Placas Madre", value: "motherboards"}
 ];
 
-export default productCategory;
+export const getCategoryLabel = (value) => {
+  const category = productCategory.find(category => category.value === value);
+  return category ? category.label : null;
+};

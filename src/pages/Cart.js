@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import Context from "../context";
-import displayINRCurrency from "../helpers/displayCurrency";
+import displayCurrency from "../helpers/displayCurrency";
+import { getCategoryLabel } from "../helpers/productCategory";
 import { MdDelete } from "react-icons/md";
 import summaryApi from "../common";
 
@@ -20,9 +21,21 @@ const Cart = () => {
     });
 
     const responseData = await response.json();
+
     console.log(responseData);
     if (responseData.success) {
-      setData(responseData.data);
+      setData(() => {
+        return responseData?.data.map((product) => {
+          const newProduct = {
+            ...product,
+            productId: {
+              ...product.productId,
+              category: getCategoryLabel(product.productId.category)
+            }
+          }
+          return newProduct;
+        })
+      });
     }
   },[]);
 
@@ -155,10 +168,10 @@ const Cart = () => {
                       </p>
                       <div className="flex items-center justify-between">
                         <p className="text-red-600 font-medium text-lg">
-                          {displayINRCurrency(product?.productId?.sellingPrice)}
+                          {displayCurrency(product?.productId?.sellingPrice)}
                         </p>
                         <p className="text-slate-600 font-semibold text-lg">
-                          {displayINRCurrency(
+                          {displayCurrency(
                             product?.productId?.sellingPrice * product?.quantity
                           )}
                         </p>
@@ -194,19 +207,19 @@ const Cart = () => {
             <div className="h-36 bg-slate-200 border border-slate-300 animate-pulse"></div>
           ) : (
             <div className="h-36 bg-white">
-              <h2 className="text-white bg-red-600 px-4 py-1">Summary</h2>
+              <h2 className="text-white bg-red-600 px-4 py-1">Resumen</h2>
               <div className="flex items-center justify-between px-4 gap-2 font-medium text-lg text-slate-600">
-                <p>Quantity</p>
+                <p>Cantidad</p>
                 <p>{totalQty}</p>
               </div>
 
               <div className="flex items-center justify-between px-4 gap-2 font-medium text-lg text-slate-600">
-                <p>Total Price</p>
-                <p>{displayINRCurrency(totalPrice)}</p>
+                <p>Precio Total</p>
+                <p>{displayCurrency(totalPrice)}</p>
               </div>
 
               <button className="bg-blue-600 p-2 text-white w-full mt-2">
-                Payment
+                Pagar
               </button>
             </div>
           )}

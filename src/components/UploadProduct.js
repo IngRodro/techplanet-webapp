@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { CgClose } from "react-icons/cg";
-import productCategory from "../helpers/productCategory";
+import { productCategory } from "../helpers/productCategory";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import DisplayImage from "./DisplayImage";
 import { MdDelete } from "react-icons/md";
-import SummaryApi from "../common";
+import summaryApi from "../common";
 import { toast } from "react-toastify";
 import imageTobase64 from "../helpers/imageToBase64";
 
@@ -60,8 +60,8 @@ const UploadProduct = ({ onClose, fetchData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(SummaryApi.uploadProduct.url, {
-      method: SummaryApi.uploadProduct.method,
+    const response = await fetch(summaryApi.uploadProduct.url, {
+      method: summaryApi.uploadProduct.method,
       credentials: "include",
       headers: {
         "content-type": "application/json",
@@ -99,11 +99,11 @@ const UploadProduct = ({ onClose, fetchData }) => {
           className="grid p-4 gap-2 overflow-y-scroll h-full pb-5"
           onSubmit={handleSubmit}
         >
-          <label htmlFor="productName">Product Name :</label>
+          <label htmlFor="productName">Nombre de Producto:</label>
           <input
             type="text"
             id="productName"
-            placeholder="enter product name"
+            placeholder="Ingrese el nombre del producto"
             name="productName"
             value={data.productName}
             onChange={handleOnChange}
@@ -112,12 +112,12 @@ const UploadProduct = ({ onClose, fetchData }) => {
           />
 
           <label htmlFor="brandName" className="mt-3">
-            Brand Name :
+            Nombre de Marca:
           </label>
           <input
             type="text"
             id="brandName"
-            placeholder="enter brand name"
+            placeholder="Ingresa el nombre de la marca"
             value={data.brandName}
             name="brandName"
             onChange={handleOnChange}
@@ -126,7 +126,7 @@ const UploadProduct = ({ onClose, fetchData }) => {
           />
 
           <label htmlFor="category" className="mt-3">
-            Category :
+            Categoría:
           </label>
           <select
             required
@@ -146,7 +146,7 @@ const UploadProduct = ({ onClose, fetchData }) => {
           </select>
 
           <label htmlFor="productImages" className="mt-3">
-            Product Image :
+            Imagenes del Producto:
           </label>
           <label htmlFor="uploadImageInput">
             <div className="p-2 bg-slate-100 border rounded h-32 w-full flex justify-center items-center cursor-pointer">
@@ -154,7 +154,7 @@ const UploadProduct = ({ onClose, fetchData }) => {
                 <span className="text-4xl">
                   <FaCloudUploadAlt />
                 </span>
-                <p className="text-sm">Upload Product Image</p>
+                <p className="text-sm">Agrega Imagenes</p>
                 <input
                   type="file"
                   id="uploadImageInput"
@@ -194,18 +194,18 @@ const UploadProduct = ({ onClose, fetchData }) => {
               </div>
             ) : (
               <p className="text-red-600 text-xs">
-                *Please upload product image
+                *Por favor sube una imagen del producto
               </p>
             )}
           </div>
 
           <label htmlFor="price" className="mt-3">
-            Price :
+            Precio:
           </label>
           <input
             type="number"
             id="price"
-            placeholder="enter price"
+            placeholder="Ingresa un precio"
             value={data.price}
             name="price"
             onChange={handleOnChange}
@@ -214,12 +214,12 @@ const UploadProduct = ({ onClose, fetchData }) => {
           />
 
           <label htmlFor="sellingPrice" className="mt-3">
-            Selling Price :
+            Precio de Venta:
           </label>
           <input
             type="number"
             id="sellingPrice"
-            placeholder="enter selling price"
+            placeholder="Ingresa un precio de venta"
             value={data.sellingPrice}
             name="sellingPrice"
             onChange={handleOnChange}
@@ -228,11 +228,11 @@ const UploadProduct = ({ onClose, fetchData }) => {
           />
 
           <label htmlFor="description" className="mt-3">
-            Description :
+            Descripción:
           </label>
           <textarea
             className="h-28 bg-slate-100 border resize-none p-1"
-            placeholder="enter product description"
+            placeholder="Ingresa una descripción del producto"
             rows={3}
             onChange={handleOnChange}
             name="description"
@@ -240,7 +240,7 @@ const UploadProduct = ({ onClose, fetchData }) => {
           ></textarea>
 
           <button className="px-3 py-2 bg-red-600 text-white mb-10 hover:bg-red-700">
-            Upload Product
+            Agregar Producto
           </button>
         </form>
       </div>

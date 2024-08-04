@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import summaryApi from "../common";
 import { Link } from "react-router-dom";
-import productCategory from "../helpers/productCategory";
+import { productCategory } from "../helpers/productCategory";
 
 const CategoryList = () => {
   const [categoryProduct, setCategoryProduct] = useState([]);

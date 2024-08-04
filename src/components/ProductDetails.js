@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import SummaryApi from "../common";
+import summaryApi from "../common";
 import { FaStar } from "react-icons/fa";
 import { FaStarHalf } from "react-icons/fa";
-import displayINRCurrency from "../helpers/displayCurrency";
+import displayCurrency from "../helpers/displayCurrency";
 import ProductByCategoryDisplay from "../components/ProductByCategoryDisplay";
 import Context from "../context";
 import addToCart from '../helpers/addToCart';
@@ -35,8 +35,8 @@ const ProductDetails = () => {
 
   const fetchProductDetails = useCallback( async () => {
     setLoading(true);
-    const response = await fetch(SummaryApi.productDetails.url, {
-      method: SummaryApi.productDetails.method,
+    const response = await fetch(summaryApi.productDetails.url, {
+      method: summaryApi.productDetails.method,
       headers: {
         "content-type": "application/json",
       },
@@ -199,10 +199,10 @@ const ProductDetails = () => {
 
             <div className="flex items-center gap-2 text-2xl lg:text-3xl font-medium my-1">
               <p className="text-red-600">
-                {displayINRCurrency(data.sellingPrice)}
+                {displayCurrency(data.sellingPrice)}
               </p>
               <p className="text-slate-400 line-through">
-                {displayINRCurrency(data.price)}
+                {displayCurrency(data.price)}
               </p>
             </div>
 

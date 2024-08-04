@@ -1,4 +1,4 @@
-const displayINRCurrency = (num) => {
+const displayCurrency = (num) => {
   const formatter = new Intl.NumberFormat('en-US',{
       style : "currency",
       currency : 'USD',
@@ -9,4 +9,4 @@ const displayINRCurrency = (num) => {
 
 }
 
-export default displayINRCurrency
+export default displayCurrency

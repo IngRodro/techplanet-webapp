@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import UploadProduct from '../components/UploadProduct'
-import SummaryApi from '../common'
+import summaryApi from '../common'
 import AdminProductCard from '../components/AdminProductCard'
 
 const AllProducts = () => {
@@ -8,7 +8,7 @@ const AllProducts = () => {
   const [allProduct,setAllProduct] = useState([])
 
   const fetchAllProduct = async() =>{
-    const response = await fetch(SummaryApi.allProduct.url)
+    const response = await fetch(summaryApi.allProduct.url)
     const dataResponse = await response.json()
 
     setAllProduct(dataResponse?.data || [])
@@ -21,8 +21,8 @@ const AllProducts = () => {
   return (
     <div>
         <div className='bg-white py-2 px-4 flex justify-between items-center'>
-            <h2 className='font-bold text-lg'>All Product</h2>
-            <button  className='border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition-all py-1 px-3 rounded-full ' onClick={()=>setOpenUploadProduct(true)}>Upload Product</button>
+            <h2 className='font-bold text-lg'>Todos los Produtos</h2>
+            <button  className='border-2 border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white transition-all py-1 px-3 rounded-full ' onClick={()=>setOpenUploadProduct(true)}>Agregar Producto</button>
         </div>
 
         {/**all product */}

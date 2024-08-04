@@ -41,11 +41,11 @@ const AllUsers = () => {
         <thead>
           <tr className="bg-black text-white">
             <th></th>
-            <th>Name</th>
+            <th>Nombre</th>
             <th>Email</th>
-            <th>Role</th>
-            <th>Created Date</th>
-            <th>Action</th>
+            <th>Rol</th>
+            <th>Fecha de Creación</th>
+            <th>Acción</th>
           </tr>
         </thead>
         <tbody className="">

@@ -1,12 +1,13 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import fetchProductByCategory from "../helpers/fetchProductByCategory";
-import displayINRCurrency from "../helpers/displayCurrency";
+import displayCurrency from "../helpers/displayCurrency";
+import { getCategoryLabel } from "../helpers/productCategory";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Context from "../context";
 import addToCart from "../helpers/addToCart";
 
-const VerticalCardProduct = ({ category, heading }) => {
+const VerticalCardProduct = ({ category, heading, brand }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const loadingList = new Array(13).fill(null);
@@ -22,11 +23,18 @@ const VerticalCardProduct = ({ category, heading }) => {
 
   const fetchData = useCallback( async () => {
     setLoading(true);
-    const categoryProduct = await fetchProductByCategory(category);
+    const categoryProduct = await fetchProductByCategory(category, brand);
     setLoading(false);
 
-    setData(categoryProduct?.data);
-  }, [category]);
+    setData(() => {
+      return categoryProduct?.data.map((product) => {
+        return {
+          ...product,
+          category: getCategoryLabel(category)
+        }
+      })
+    });
+  }, [category, brand]);
 
   useEffect(() => {
     fetchData();
@@ -99,10 +107,10 @@ const VerticalCardProduct = ({ category, heading }) => {
                     </p>
                     <div className="flex gap-3">
                       <p className="text-red-600 font-medium">
-                        {displayINRCurrency(product?.sellingPrice)}
+                        {displayCurrency(product?.sellingPrice)}
                       </p>
                       <p className="text-slate-500 line-through">
-                        {displayINRCurrency(product?.price)}
+                        {displayCurrency(product?.price)}
                       </p>
                     </div>
                     <button

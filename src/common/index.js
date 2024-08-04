@@ -41,8 +41,8 @@ const summaryApi = {
     url: `${backendDomain}/v1/products/get-categories`,
     method: "get",
   },
-  productByCategory: {
-    url: `${backendDomain}/v1/products/products-by-category`,
+  productByCategoryOrBrand: {
+    url: `${backendDomain}/v1/products/products-by-category-or-brand`,
     method: "post",
   },
   productDetails: {

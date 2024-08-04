@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import fetchProductByCategory from "../helpers/fetchProductByCategory";
-import displayINRCurrency from "../helpers/displayCurrency";
+import displayCurrency from "../helpers/displayCurrency";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Context from "../context";
@@ -104,10 +104,10 @@ const HorizontalCardProduct = ({ category, heading }) => {
                     </p>
                     <div className="flex gap-3">
                       <p className="text-red-600 font-medium">
-                        {displayINRCurrency(product?.sellingPrice)}
+                        {displayCurrency(product?.sellingPrice)}
                       </p>
                       <p className="text-slate-500 line-through">
-                        {displayINRCurrency(product?.price)}
+                        {displayCurrency(product?.price)}
                       </p>
                     </div>
                     <button
