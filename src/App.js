@@ -44,7 +44,7 @@ function App() {
   });
 
   return (
-    <>
+     <>
       <Context.Provider
         value={{
           fetchUserDetails,
@@ -52,11 +52,9 @@ function App() {
           fetchUserAddToCart: fetchUserCartCount
         }}
       >
-        <ToastContainer
-          position='top-center'
-        />
+        <ToastContainer position='top-center' />
         <Header />
-        <main className="min-h-[calc(100vh-100px)]">
+        <main className="min-h-[calc(100vh-100px)] relative">
           <Outlet />
         </main>
         <Footer />
