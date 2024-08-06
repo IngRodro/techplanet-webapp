@@ -49,7 +49,8 @@ function App() {
         value={{
           fetchUserDetails,
           cartProductCount,
-          fetchUserAddToCart: fetchUserCartCount
+          fetchUserCartCount,
+          setCartProductCount
         }}
       >
         <ToastContainer position='top-center' />

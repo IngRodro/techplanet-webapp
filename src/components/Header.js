@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import Logo from "./Logo";
 import { GrSearch } from "react-icons/gr";
-import { FaRegCircleUser } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,10 +16,10 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const context = useContext(Context);
-  const searchInput = useLocation()
-  const URLSearch = new URLSearchParams(searchInput?.search)
-  const searchQuery = URLSearch.getAll("q")
-  const [search,setSearch] = useState(searchQuery)
+  const searchInput = useLocation();
+  const URLSearch = new URLSearchParams(searchInput?.search);
+  const searchQuery = URLSearch.getAll("q");
+  const [search, setSearch] = useState(searchQuery);
 
   const handleLogout = async () => {
     const fetchData = await fetch(summaryApi.logoutUser.url, {
@@ -32,6 +31,8 @@ const Header = () => {
 
     if (data.success) {
       toast.success(data.message);
+      context.fetchUserCartCount();
+      setMenuDisplay(false)
       dispatch(setUserDetails(null));
       navigate("/");
     }
@@ -41,32 +42,33 @@ const Header = () => {
     }
   };
 
-  const handleSearch = (e)=>{
-    const { value } = e.target
-    setSearch(value)
+  const handleSearch = (e) => {
+    const { value } = e.target;
+    setSearch(value);
 
-    if(value){
-      navigate(`/search?q=${value}`)
-    }else{
-      navigate("/search")
+    if (value) {
+      navigate(`/search?q=${value}`);
+    } else {
+      navigate("/search");
     }
-  }
+  };
 
   return (
     <header className="h-16 shadow-sm border">
       <div className="h-full container mx-auto flex items-center px-4 justify-between">
-        <section className="">
+        <section className="flex items-center">
           <Link to={"/"}>
             <Logo width={120} />
           </Link>
         </section>
 
-        <section className="hidden lg:flex items-center w-full justify-between max-w-sm border rounded-r-full focus-within:shadow-sm pl-1">
+        <section className="hidden md:flex items-center w-full justify-between max-w-sm border rounded-r-full focus-within:shadow-sm pl-1">
           <input
             type="text"
             placeholder="Ingrese su búsqueda ..."
             className="w-full outline-none pl-2"
-            onChange={handleSearch} value={search}
+            onChange={handleSearch}
+            value={search}
           />
           <div className="text-lg min-w-[50px] h-8 bg-blue-700 flex items-center justify-center rounded-r-full">
             <GrSearch color="white" />
@@ -80,33 +82,35 @@ const Header = () => {
                 src={user?.profilePic?.secure_url}
                 className="w-10 h-10 rounded-full"
                 alt={user?.name}
-                onClick={()=>setMenuDisplay(preve => {if(user?.role === ROLE.ADMIN){return !preve}})}
+                onClick={() => setMenuDisplay(prev => !prev)}
               />
-            ) : (
-              <FaRegCircleUser />
-            )}
+            ) : null}
             {menuDisplay && (
-              <div className="absolute bg-white bottom-0 top-11 h-fit p-1 shadow-lg rounded">
+              <div className="absolute bg-white bottom-0 top-11 h-fit p-1 shadow-lg rounded z-50">
                 <nav>
                   {user?.role === ROLE.ADMIN && (
                     <Link
                       to={"/admin-panel"}
-                      className="whitespace-nowrap hidden md:block hover:bg-slate-100 p-2 "
-                      onClick={() => setMenuDisplay((preve) => !preve)}
+                      className="whitespace-nowrap block hover:bg-slate-100 p-2 "
+                      onClick={() => setMenuDisplay(false)}
                     >
                       Admin Panel
                     </Link>
                   )}
+                  <button
+                    onClick={handleLogout}
+                    className="whitespace-nowrap block w-full text-left hover:bg-slate-100 p-2"
+                  >
+                    Cerrar Sesión
+                  </button>
                 </nav>
               </div>
             )}
           </div>
           <div className="text-2xl relative">
             <span>
-            <Link
-                to={"/cart"}
-              >
-               <FaShoppingCart />
+              <Link to={"/cart"}>
+                <FaShoppingCart />
               </Link>
             </span>
             <div className="bg-blue-700 text-white w-5 h-5 p-1 flex items-center justify-center rounded-full absolute -top-2 -right-3">
@@ -114,25 +118,32 @@ const Header = () => {
             </div>
           </div>
 
-          <div>
-            {user?.id ? (
-              <button
-                onClick={handleLogout}
-                className="px-3 py-1 bg-blue-700 text-white hover:bg-blue-900"
-              >
-                Cerrar Sesión
-              </button>
-            ) : (
-              <Link
-                to={"/login"}
-                className="px-3 py-1 bg-blue-700 text-white hover:bg-blue-900"
-              >
-                Iniciar Sesión
-              </Link>
-            )}
-          </div>
+          {!user?.id && (
+            <Link
+              to={"/login"}
+              className="px-3 py-1 bg-blue-700 text-white hover:bg-blue-900"
+            >
+              Iniciar Sesión
+            </Link>
+          )}
         </section>
       </div>
+
+      {/* Search input for small screens */}
+      <div className="flex items-center gap-7 lg:hidden w-full mt-2">
+          <div className="flex-grow border rounded-full focus-within:shadow-sm pl-1 flex items-center">
+            <input
+              type="text"
+              placeholder="Ingrese su búsqueda ..."
+              className="w-full outline-none pl-2"
+              onChange={handleSearch}
+              value={search}
+            />
+            <div className="text-lg min-w-[50px] h-8 bg-blue-700 flex items-center justify-center rounded-full">
+              <GrSearch color="white" />
+            </div>
+          </div>
+        </div>
     </header>
   );
 };

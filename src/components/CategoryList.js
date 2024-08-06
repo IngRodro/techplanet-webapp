@@ -39,7 +39,7 @@ const CategoryList = () => {
   }, []);
 
   return (
-    <div className="container mx-auto h-48 p-4">
+    <div className="container mx-auto h-48 p-6 my-4">
       <div className="flex items-center justify-between overflow-scroll scrollbar-none">
         {loading
           ? categoryLoading.map((el, index) => {
