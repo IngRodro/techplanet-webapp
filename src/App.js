@@ -53,7 +53,7 @@ function App() {
           setCartProductCount
         }}
       >
-        <ToastContainer position='top-center' />
+        <ToastContainer position='top-center' pauseOnHover={false}/>
         <Header />
         <main className="min-h-[calc(100vh-100px)] relative">
           <Outlet />
@@ -62,6 +62,8 @@ function App() {
       </Context.Provider>
     </>
   );
+
+  
 }
 
 export default App;
