@@ -211,18 +211,18 @@ const ProductDetails = () => {
                 className="border-2 border-red-600 rounded px-3 py-1 min-w-[120px] text-red-600 font-medium hover:bg-red-600 hover:text-white"
                 onClick={(e) => handleBuyProduct(e, data?.id)}
               >
-                Buy
+                Comprar
               </button>
               <button
                 className="border-2 border-red-600 rounded px-3 py-1 min-w-[120px] font-medium text-white bg-red-600 hover:text-red-600 hover:bg-white"
                 onClick={(e) => handleAddToCart(e, data?.id)}
               >
-                Add To Cart
+                Agregar al Carrito
               </button>
             </div>
 
             <div>
-              <p className="text-slate-600 font-medium my-1">Description : </p>
+              <p className="text-slate-600 font-medium my-1">Descrición : </p>
               <p>{data?.description}</p>
             </div>
           </div>
@@ -232,7 +232,7 @@ const ProductDetails = () => {
       {data.category && (
         <ProductByCategoryDisplay
           category={data?.category}
-          heading={"Recommended Product"}
+          heading={"Productos Recomendados"}
         />
       )}
     </div>

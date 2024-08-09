@@ -9,14 +9,19 @@ const BannerProduct = () => {
   const [currentImage, setCurrentImage] = useState(0);
 
   const desktopImages = useMemo(() => [image1, image2, image3], []);
+  const messages = [
+    "Nuevas tarjetas gráficas AMD",
+    "Nuevos procesadores AMD",
+    "Nueva PS5 Slim",
+  ];
 
   const nextImage = useCallback(() => {
     if (desktopImages.length - 1 > currentImage) {
       setCurrentImage((preve) => preve + 1);
-    }else {
+    } else {
       setCurrentImage(0);
     }
-  },[currentImage, desktopImages]);
+  }, [currentImage, desktopImages]);
 
   const preveImage = () => {
     if (currentImage !== 0) {
@@ -28,16 +33,18 @@ const BannerProduct = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-        nextImage();
+      nextImage();
     }, 5000);
 
     return () => clearInterval(interval);
   }, [nextImage]);
 
   return (
-    <div className="bg-slate-100 mx-auto max-w-screen-xl flex flex-col md:flex-row gap-6 p-4">
+    <div className=" mx-auto max-w-screen-xl flex flex-col md:flex-row gap-6 p-4">
       <div className="flex-grow flex items-center justify-center md:w-1/3">
-        <div className="text-center">Message</div>
+        <div className="text-center text-2xl font-bold text-white bg-gray-800 bg-opacity-70 p-4 rounded-md shadow-md">
+          {messages[currentImage]}
+        </div>
       </div>
       <div className="w-full md:w-2/3 mx-auto rounded">
         <div className="relative h-56 md:h-96 w-full bg-slate-200">
