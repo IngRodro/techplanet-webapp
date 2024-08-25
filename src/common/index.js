@@ -77,6 +77,10 @@ const summaryApi = {
     url: `${backendDomain}/v1/products/filter-products`,
     method: "post",
   },
+  changeAvailability:{
+    url: `${backendDomain}/v1/products/change-availability`,
+    method: "put",
+  }
 };
 
 export default summaryApi;

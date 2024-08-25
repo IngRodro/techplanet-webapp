@@ -101,7 +101,7 @@ const AdminPanel = () => {
       </aside>
 
       {/* Main content */}
-      <main className="w-full h-full p-2 ml-0 md:ml-64">
+      <main className="w-full h-full p-2 ml-0">
         <Outlet />
       </main>
     </div>

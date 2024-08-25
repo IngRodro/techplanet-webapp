@@ -222,7 +222,7 @@ const ProductDetails = () => {
             </div>
 
             <div>
-              <p className="text-slate-600 font-medium my-1">Descrición : </p>
+              <p className="text-slate-600 font-medium my-1">Descripción : </p>
               <p>{data?.description}</p>
             </div>
           </div>

@@ -13,7 +13,7 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
     productName: productData?.productName,
     brandName: productData?.brandName,
     category: productData?.category,
-    productImage: productData?.productImage || [],
+    productImage: productData?.productImages || [],
     description: productData?.description,
     price: productData?.price,
     sellingPrice: productData?.sellingPrice,
@@ -166,18 +166,18 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
           <div>
             {data?.productImage[0] ? (
               <div className="flex items-center gap-2">
-                {data.productImage.map((el, index) => {
+                {data.productImage.map((image, index) => {
                   return (
                     <div className="relative group">
                       <img
-                        src={el}
-                        alt={el}
+                        src={image.secure_url}
+                        alt={""}
                         width={80}
                         height={80}
                         className="bg-slate-100 border cursor-pointer"
                         onClick={() => {
                           setOpenFullScreenImage(true);
-                          setFullScreenImage(el);
+                          setFullScreenImage(image.secure_url);
                         }}
                       />
 
