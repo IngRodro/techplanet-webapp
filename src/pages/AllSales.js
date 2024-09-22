@@ -67,7 +67,7 @@ const SalesDashboard = () => {
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
-        Dashboard de <span className="text-indigo-600">Visitas</span>
+        Dashboard de <span className="text-indigo-600">Ventas</span>
       </h2>
       <div className="flex items-center my-4">
         <label className="mr-2">Mes:</label>
