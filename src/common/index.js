@@ -92,6 +92,9 @@ const summaryApi = {
   getVisits: {
     url: `${backendDomain}/v1/visits/get-visits`,
     method: "get",
+  },
+  getSales: {
+    url: `${backendDomain}/v1/sales/get-monthly-total-amount`
   }
 };
 

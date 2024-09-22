@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
-
+import summaryApi from "../common";
 // Registra los elementos de Chart.js
 Chart.register(...registerables);
 
@@ -18,7 +18,11 @@ const SalesDashboard = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:8080/v1/sales/get-monthly-total-amount?month=${month}&year=${year}`
+        `${summaryApi.getSales.url}?month=${month}&year=${year}`,
+        {
+          method: summaryApi.currentUser.method,
+          credentials: "include",
+        }
       );
       if (!response.ok) {
         throw new Error("Error al obtener los datos");
