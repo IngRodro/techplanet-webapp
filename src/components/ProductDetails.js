@@ -29,7 +29,7 @@ const ProductDetails = () => {
   });
   const [zoomImage, setZoomImage] = useState(false);
 
-  const { fetchUserAddToCart } = useContext(Context);
+  const { fetchUserCartCount } = useContext(Context);
 
   const navigate = useNavigate();
 
@@ -81,11 +81,11 @@ const ProductDetails = () => {
 
   const handleAddToCart = async (e, id) => {
     await addToCart(e,id)
-    fetchUserAddToCart();
+    fetchUserCartCount();
   };
 
   const handleBuyProduct = async (e, id) => {
-    fetchUserAddToCart();
+    fetchUserCartCount();
     navigate("/cart");
   };
 

@@ -11,11 +11,11 @@ const ProductByCategoryDisplay = ({ category, heading }) => {
   const [loading, setLoading] = useState(true);
   const loadingList = new Array(13).fill(null);
 
-  const { fetchUserAddToCart } = useContext(Context);
+  const { fetchUserCartCount } = useContext(Context);
 
   const handleAddToCart = async (e, id) => {
     await addToCart(e,id)
-    fetchUserAddToCart();
+    fetchUserCartCount();
   };
 
   const fetchData = useCallback(async () => {

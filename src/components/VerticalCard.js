@@ -7,11 +7,11 @@ import { Link } from "react-router-dom";
 
 const VerticalCard = ({ loading, data = [] }) => {
   const loadingList = new Array(13).fill(null);
-  const { fetchUserAddToCart } = useContext(Context);
+  const { fetchUserCartCount } = useContext(Context);
 
   const handleAddToCart = async (e, id) => {
     await addToCart(e, id);
-    fetchUserAddToCart();
+    fetchUserCartCount();
   };
 
   return (

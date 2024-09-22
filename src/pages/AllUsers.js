@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import moment from "moment";
-import { MdModeEdit } from "react-icons/md";
 import ChangeUserRole from "../components/ChangeUserRole";
 import summaryApi from "../common";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 const AllUsers = () => {
   const [allUser, setAllUsers] = useState([]);
@@ -36,43 +47,57 @@ const AllUsers = () => {
   }, []);
 
   return (
-    <div className="bg-white pb-4">
-      <table className="w-full userTable">
-        <thead>
-          <tr className="bg-black text-white">
-            <th></th>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Rol</th>
-            <th>Fecha de Creación</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody className="">
-          {allUser.map((el, index) => {
-            return (
-              <tr>
-                <td>{index + 1}</td>
-                <td>{el?.name}</td>
-                <td>{el?.email}</td>
-                <td>{el?.role}</td>
-                <td>{moment(el?.createdAt).format("LL")}</td>
-                <td>
-                  <button
-                    className="bg-green-100 p-2 rounded-full cursor-pointer hover:bg-green-500 hover:text-white"
+    <div style={{ padding: "2rem" }}>
+      <Typography variant="h4" component="h2" align="center" gutterBottom>
+        Lista de <span style={{ color: "#3f51b5" }}>Usuarios</span>
+      </Typography>
+
+      <TableContainer component={Paper} elevation={3}>
+        <Table>
+          <TableHead style={{ backgroundColor: "#3f51b5" }}>
+            <TableRow>
+              <TableCell style={{ color: "white" }}>#</TableCell>
+              <TableCell style={{ color: "white" }}>Nombre</TableCell>
+              <TableCell style={{ color: "white" }}>Email</TableCell>
+              <TableCell style={{ color: "white" }}>Rol</TableCell>
+              <TableCell style={{ color: "white" }}>Fecha de Creación</TableCell>
+              <TableCell style={{ color: "white", textAlign: "center" }}>Acción</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {allUser.map((el, index) => (
+              <TableRow key={el.id}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{el?.name || "N/A"}</TableCell>
+                <TableCell>{el?.email}</TableCell>
+                <TableCell>
+                  <Typography
+                    variant="body2"
+                    style={{
+                      color: el?.role === "admin" ? "red" : "blue",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {el?.role}
+                  </Typography>
+                </TableCell>
+                <TableCell>{moment(el?.createdAt).format("LL")}</TableCell>
+                <TableCell align="center">
+                  <IconButton
+                    color="primary"
                     onClick={() => {
                       setUpdateUserDetails(el);
                       setOpenUpdateRole(true);
                     }}
                   >
-                    <MdModeEdit />
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                    <EditIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       {openUpdateRole && (
         <ChangeUserRole

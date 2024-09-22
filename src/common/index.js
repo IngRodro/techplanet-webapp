@@ -80,6 +80,18 @@ const summaryApi = {
   changeAvailability:{
     url: `${backendDomain}/v1/products/change-availability`,
     method: "put",
+  },
+  registerVisit:{
+    url: `${backendDomain}/v1/visits/register-visit`,
+    method: "post",
+  },
+  saveSale: {
+    url: `${backendDomain}/v1/sales/save-sale`,
+    method: "post",
+  },
+  getVisits: {
+    url: `${backendDomain}/v1/visits/get-visits`,
+    method: "get",
   }
 };
 

@@ -1,8 +1,22 @@
 import React, { useState } from "react";
-import ROLE from "../common/role";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import summaryApi from "../common";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
+  IconButton,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  Box,
+} from "@mui/material";
+import ROLE from "../common/role";
 
 const ChangeUserRole = ({ name, email, role, userId, onClose, callFunc }) => {
   const [userRole, setUserRole] = useState(role);
@@ -25,7 +39,7 @@ const ChangeUserRole = ({ name, email, role, userId, onClose, callFunc }) => {
     });
 
     const responseData = await fetchResponse.json();
-  
+
     if (responseData.success) {
       toast.success(responseData.message);
       onClose();
@@ -34,42 +48,49 @@ const ChangeUserRole = ({ name, email, role, userId, onClose, callFunc }) => {
   };
 
   return (
-    <div className="fixed top-0 bottom-0 left-0 right-0 w-full h-full z-10 flex justify-between items-center bg-slate-200 bg-opacity-50">
-      <div className="mx-auto bg-white shadow-md p-4 w-full max-w-sm">
-        <button className="block ml-auto" onClick={onClose}>
-          <IoMdClose />
-        </button>
+    <Dialog open onClose={onClose} fullWidth maxWidth="xs">
+      <DialogTitle>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Typography variant="h6">Cambiar Rol de Usuario</Typography>
+          <IconButton onClick={onClose}>
+            <IoMdClose />
+          </IconButton>
+        </Box>
+      </DialogTitle>
 
-        <h1 className="pb-4 text-lg font-medium">Change User Role</h1>
+      <DialogContent dividers>
+        <Typography variant="body1" gutterBottom>
+          <strong>Nombre:</strong> {name}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          <strong>Email:</strong> {email}
+        </Typography>
 
-        <p>Name : {name}</p>
-        <p>Email : {email}</p>
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Rol</InputLabel>
+          <Select value={userRole} onChange={handleOnChangeSelect} label="Rol">
+            {Object.values(ROLE).map((el) => (
+              <MenuItem value={el} key={el}>
+                {el}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </DialogContent>
 
-        <div className="flex items-center justify-between my-4">
-          <p>Role :</p>
-          <select
-            className="border px-4 py-1"
-            value={userRole}
-            onChange={handleOnChangeSelect}
-          >
-            {Object.values(ROLE).map((el) => {
-              return (
-                <option value={el} key={el}>
-                  {el}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-
-        <button
-          className="w-fit mx-auto block  py-1 px-3 rounded-full bg-red-600 text-white hover:bg-red-700"
+      <DialogActions>
+        <Button onClick={onClose} color="error">
+          Cancelar
+        </Button>
+        <Button
           onClick={updateUserRole}
+          color="primary"
+          variant="contained"
         >
-          Change Role
-        </button>
-      </div>
-    </div>
+          Cambiar Rol
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

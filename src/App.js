@@ -24,7 +24,9 @@ function App() {
 
     if (dataApi.success) {
       dispatch(setUserDetails(dataApi.data));
+      return
     }
+    dispatch(setUserDetails(null))
   };
 
   const fetchUserCartCount = async()=>{

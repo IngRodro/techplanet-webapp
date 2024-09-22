@@ -4,6 +4,7 @@ import displayCurrency from "../helpers/displayCurrency";
 import { getCategoryLabel } from "../helpers/productCategory";
 import { MdDelete } from "react-icons/md";
 import summaryApi from "../common";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const [data, setData] = useState([]);
@@ -22,7 +23,6 @@ const Cart = () => {
 
     const responseData = await response.json();
 
-    console.log(responseData);
     if (responseData.success) {
       setData(() => {
         return responseData?.data.map((product) => {
@@ -90,6 +90,8 @@ const Cart = () => {
     }
   };
 
+  console.log(data)
+
   const deleteCartProduct = async (id) => {
     const response = await fetch(summaryApi.deleteCartProduct.url, {
       method: summaryApi.deleteCartProduct.method,
@@ -106,9 +108,32 @@ const Cart = () => {
 
     if (responseData.success) {
       fetchData();
-      context.fetchUserAddToCart();
+      context.fetchUserCartCount();
     }
   };
+
+  const paySale = async() => {
+    const response = await fetch(summaryApi.saveSale.url, {
+      method: summaryApi.saveSale.method,
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const datResponse = await response.json()
+
+    if(datResponse.success) {
+      toast.success(datResponse.message);
+      data.forEach((cart) => {
+        deleteCartProduct(cart.id)
+      })
+    }
+    if(datResponse.error){
+      toast.error(datResponse.message);
+    }
+  }
 
   const totalQty = data.reduce(
     (previousValue, currentValue) => previousValue + currentValue.quantity,
@@ -122,7 +147,7 @@ const Cart = () => {
     <div className="container mx-auto">
       <div className="text-center text-lg my-3">
         {data.length === 0 && !loading && (
-          <p className="bg-white py-5">No Data</p>
+          <p className="bg-white py-5"></p>
         )}
       </div>
 
@@ -218,7 +243,7 @@ const Cart = () => {
                 <p>{displayCurrency(totalPrice)}</p>
               </div>
 
-              <button className="bg-blue-600 p-2 text-white w-full mt-2">
+              <button className="bg-blue-600 p-2 text-white w-full mt-2" onClick={paySale}>
                 Pagar
               </button>
             </div>

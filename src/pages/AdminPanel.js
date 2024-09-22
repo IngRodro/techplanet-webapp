@@ -14,14 +14,13 @@ const AdminPanel = () => {
     setMenuOpen(!menuOpen);
   };
 
-
   useEffect(() => {
     if (user?.role !== ROLE.ADMIN) {
       navigate("/");
     }
   }, [user, navigate]);
   return (
-   <div className="relative min-h-[calc(100vh-100px)] flex">
+    <div className="relative min-h-[calc(100vh-100px)] flex">
       {/* Button for toggling sidebar */}
       <button
         onClick={toggleMenu}
@@ -49,12 +48,30 @@ const AdminPanel = () => {
         </div>
 
         {/* Navigation */}
-        <nav className="grid p-4">
-          <Link to={"all-users"} className="px-2 py-1 hover:bg-slate-100">
+        <nav className="flex flex-col p-4 space-y-2 gap-6 mt-6">
+          <Link
+            to={"all-users"}
+            className="block px-4 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors text-lg shadow-md hover:shadow-lg"
+          >
             Usuarios
           </Link>
-          <Link to={"all-products"} className="px-2 py-1 hover:bg-slate-100">
+          <Link
+            to={"all-products"}
+            className="block px-4 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors text-lg shadow-md hover:shadow-lg"
+          >
             Productos
+          </Link>
+          <Link
+            to={"all-visits"}
+            className="block px-4 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors text-lg shadow-md hover:shadow-lg"
+          >
+            Visitas
+          </Link>
+          <Link
+            to={"all-sales"}
+            className="block px-4 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors text-lg shadow-md hover:shadow-lg"
+          >
+            Ventas
           </Link>
         </nav>
       </aside>

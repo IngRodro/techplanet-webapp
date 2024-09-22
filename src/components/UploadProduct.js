@@ -23,38 +23,30 @@ const UploadProduct = ({ onClose, fetchData }) => {
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-
-    setData((preve) => {
-      return {
-        ...preve,
-        [name]: value,
-      };
-    });
+    setData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleUploadProduct = async (e) => {
     const file = e.target.files[0];
     const imagePic = await imageTobase64(file);
 
-    setData((preve) => {
-      return {
-        ...preve,
-        productImages: [...preve.productImages, imagePic],
-      };
-    });
+    setData((prev) => ({
+      ...prev,
+      productImages: [...prev.productImages, imagePic],
+    }));
   };
 
-  const handleDeleteproductImage = async (index) => {
+  const handleDeleteProductImage = (index) => {
+    const newProductImages = [...data.productImages];
+    newProductImages.splice(index, 1);
 
-    const newproductImages = [...data.productImages];
-    newproductImages.splice(index, 1);
-
-    setData((preve) => {
-      return {
-        ...preve,
-        productImages: [...newproductImages],
-      };
-    });
+    setData((prev) => ({
+      ...prev,
+      productImages: newProductImages,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -72,89 +64,92 @@ const UploadProduct = ({ onClose, fetchData }) => {
     const responseData = await response.json();
 
     if (responseData.success) {
-      toast.success(responseData?.message);
+      toast.success(responseData.message);
       onClose();
       fetchData();
-    }
-
-    if (responseData.error) {
-      toast.error(responseData?.message);
+    } else if (responseData.error) {
+      toast.error(responseData.message);
     }
   };
 
   return (
-    <div className="fixed w-full  h-full bg-slate-200 bg-opacity-35 top-0 left-0 right-0 bottom-0 flex justify-center items-center">
-      <div className="bg-white p-4 rounded w-full max-w-2xl h-full max-h-[80%] overflow-hidden">
-        <div className="flex justify-between items-center pb-3">
-          <h2 className="font-bold text-lg">Upload Product</h2>
-          <div
-            className="w-fit ml-auto text-2xl hover:text-red-600 cursor-pointer"
+    <div className="fixed inset-0 flex items-center justify-center bg-slate-200 bg-opacity-50 z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold">Agregar Producto</h2>
+          <button
+            className="text-2xl hover:text-red-600 transition-colors"
             onClick={onClose}
           >
             <CgClose />
-          </div>
+          </button>
         </div>
 
         <form
-          className="grid p-4 gap-2 overflow-y-scroll h-full pb-5"
+          className="space-y-4 overflow-y-auto max-h-[70vh] pr-2"
           onSubmit={handleSubmit}
         >
-          <label htmlFor="productName">Nombre de Producto:</label>
-          <input
-            type="text"
-            id="productName"
-            placeholder="Ingrese el nombre del producto"
-            name="productName"
-            value={data.productName}
-            onChange={handleOnChange}
-            className="p-2 bg-slate-100 border rounded"
-            required
-          />
+          <div>
+            <label htmlFor="productName" className="block text-sm font-medium text-gray-700">
+              Nombre de Producto:
+            </label>
+            <input
+              type="text"
+              id="productName"
+              name="productName"
+              placeholder="Ingrese el nombre del producto"
+              value={data.productName}
+              onChange={handleOnChange}
+              className="mt-1 p-2 border rounded-lg w-full bg-slate-100"
+              required
+            />
+          </div>
 
-          <label htmlFor="brandName" className="mt-3">
-            Nombre de Marca:
-          </label>
-          <input
-            type="text"
-            id="brandName"
-            placeholder="Ingresa el nombre de la marca"
-            value={data.brandName}
-            name="brandName"
-            onChange={handleOnChange}
-            className="p-2 bg-slate-100 border rounded"
-            required
-          />
+          <div>
+            <label htmlFor="brandName" className="block text-sm font-medium text-gray-700">
+              Nombre de Marca:
+            </label>
+            <input
+              type="text"
+              id="brandName"
+              name="brandName"
+              placeholder="Ingresa el nombre de la marca"
+              value={data.brandName}
+              onChange={handleOnChange}
+              className="mt-1 p-2 border rounded-lg w-full bg-slate-100"
+              required
+            />
+          </div>
 
-          <label htmlFor="category" className="mt-3">
-            Categoría:
-          </label>
-          <select
-            required
-            value={data.category}
-            name="category"
-            onChange={handleOnChange}
-            className="p-2 bg-slate-100 border rounded"
-          >
-            <option value={""}>Select Category</option>
-            {productCategory.map((el, index) => {
-              return (
-                <option value={el.value} key={el.value + index}>
+          <div>
+            <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+              Categoría:
+            </label>
+            <select
+              id="category"
+              name="category"
+              value={data.category}
+              onChange={handleOnChange}
+              className="mt-1 p-2 border rounded-lg w-full bg-slate-100"
+              required
+            >
+              <option value="">Seleccionar Categoría</option>
+              {productCategory.map((el) => (
+                <option key={el.value} value={el.value}>
                   {el.label}
                 </option>
-              );
-            })}
-          </select>
+              ))}
+            </select>
+          </div>
 
-          <label htmlFor="productImages" className="mt-3">
-            Imagenes del Producto:
-          </label>
-          <label htmlFor="uploadImageInput">
-            <div className="p-2 bg-slate-100 border rounded h-32 w-full flex justify-center items-center cursor-pointer">
-              <div className="text-slate-500 flex justify-center items-center flex-col gap-2">
-                <span className="text-4xl">
-                  <FaCloudUploadAlt />
-                </span>
-                <p className="text-sm">Agrega Imagenes</p>
+          <div>
+            <label htmlFor="productImages" className="block text-sm font-medium text-gray-700">
+              Imágenes del Producto:
+            </label>
+            <label htmlFor="uploadImageInput">
+              <div className="mt-2 p-4 border rounded-lg flex flex-col items-center justify-center cursor-pointer bg-slate-100">
+                <FaCloudUploadAlt className="text-3xl text-gray-500 mb-2" />
+                <p className="text-sm text-gray-500">Agregar Imágenes</p>
                 <input
                   type="file"
                   id="uploadImageInput"
@@ -162,90 +157,88 @@ const UploadProduct = ({ onClose, fetchData }) => {
                   onChange={handleUploadProduct}
                 />
               </div>
-            </div>
-          </label>
-          <div>
-            {data?.productImages[0] ? (
-              <div className="flex items-center gap-2">
-                {data.productImages.map((el, index) => {
-                  return (
-                    <div className="relative group">
-                      <img
-                        src={el}
-                        alt={el}
-                        width={80}
-                        height={80}
-                        className="bg-slate-100 border cursor-pointer"
-                        onClick={() => {
-                          setOpenFullScreenImage(true);
-                          setFullScreenImage(el);
-                        }}
-                      />
-
-                      <div
-                        className="absolute bottom-0 right-0 p-1 text-white bg-red-600 rounded-full hidden group-hover:block cursor-pointer"
-                        onClick={() => handleDeleteproductImage(index)}
-                      >
-                        <MdDelete />
-                      </div>
-                    </div>
-                  );
-                })}
+            </label>
+            {data.productImages.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {data.productImages.map((image, index) => (
+                  <div key={index} className="relative group">
+                    <img
+                      src={image}
+                      alt={`product-${index}`}
+                      className="w-20 h-20 object-cover bg-slate-100 border rounded-lg cursor-pointer"
+                      onClick={() => {
+                        setOpenFullScreenImage(true);
+                        setFullScreenImage(image);
+                      }}
+                    />
+                    <button
+                      className="absolute top-1 right-1 text-white bg-red-600 rounded-full p-1 hidden group-hover:block"
+                      onClick={() => handleDeleteProductImage(index)}
+                    >
+                      <MdDelete />
+                    </button>
+                  </div>
+                ))}
               </div>
-            ) : (
-              <p className="text-red-600 text-xs">
-                *Por favor sube una imagen del producto
-              </p>
             )}
           </div>
 
-          <label htmlFor="price" className="mt-3">
-            Precio:
-          </label>
-          <input
-            type="number"
-            id="price"
-            placeholder="Ingresa un precio"
-            value={data.price}
-            name="price"
-            onChange={handleOnChange}
-            className="p-2 bg-slate-100 border rounded"
-            required
-          />
+          <div>
+            <label htmlFor="price" className="block text-sm font-medium text-gray-700">
+              Precio:
+            </label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              placeholder="Ingresa un precio"
+              value={data.price}
+              onChange={handleOnChange}
+              className="mt-1 p-2 border rounded-lg w-full bg-slate-100"
+              required
+            />
+          </div>
 
-          <label htmlFor="sellingPrice" className="mt-3">
-            Precio de Venta:
-          </label>
-          <input
-            type="number"
-            id="sellingPrice"
-            placeholder="Ingresa un precio de venta"
-            value={data.sellingPrice}
-            name="sellingPrice"
-            onChange={handleOnChange}
-            className="p-2 bg-slate-100 border rounded"
-            required
-          />
+          <div>
+            <label htmlFor="sellingPrice" className="block text-sm font-medium text-gray-700">
+              Precio de Venta:
+            </label>
+            <input
+              type="number"
+              id="sellingPrice"
+              name="sellingPrice"
+              placeholder="Ingresa un precio de venta"
+              value={data.sellingPrice}
+              onChange={handleOnChange}
+              className="mt-1 p-2 border rounded-lg w-full bg-slate-100"
+              required
+            />
+          </div>
 
-          <label htmlFor="description" className="mt-3">
-            Descripción:
-          </label>
-          <textarea
-            className="h-28 bg-slate-100 border resize-none p-1"
-            placeholder="Ingresa una descripción del producto"
-            rows={3}
-            onChange={handleOnChange}
-            name="description"
-            value={data.description}
-          ></textarea>
+          <div>
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+              Descripción:
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              placeholder="Ingresa una descripción del producto"
+              value={data.description}
+              onChange={handleOnChange}
+              rows={4}
+              className="mt-1 p-2 border rounded-lg w-full bg-slate-100 resize-none"
+            />
+          </div>
 
-          <button className="px-3 py-2 bg-red-600 text-white mb-10 hover:bg-red-700">
+          <button
+            type="submit"
+            className="w-full py-2 mt-4 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          >
             Agregar Producto
           </button>
         </form>
       </div>
 
-      {/***display image full screen */}
       {openFullScreenImage && (
         <DisplayImage
           onClose={() => setOpenFullScreenImage(false)}

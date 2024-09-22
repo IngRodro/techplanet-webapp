@@ -6,6 +6,7 @@ import DisplayImage from "./DisplayImage";
 import { MdDelete } from "react-icons/md";
 import summaryApi from "../common";
 import { toast } from "react-toastify";
+import imageTobase64 from "../helpers/imageToBase64";
 
 const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
   const [data, setData] = useState({
@@ -17,6 +18,8 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
     description: productData?.description,
     price: productData?.price,
     sellingPrice: productData?.sellingPrice,
+    deletedImages: [],
+    newImages: [],
   });
   const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
   const [fullScreenImage, setFullScreenImage] = useState("");
@@ -34,24 +37,41 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
 
   const handleUploadProduct = async (e) => {
     const file = e.target.files[0];
+    const imagePic = await imageTobase64(file);
 
     setData((preve) => {
       return {
         ...preve,
-        productImage: [...preve.productImage, file],
+        newImages: [...preve.newImages, imagePic],
       };
     });
   };
 
-  const handleDeleteProductImage = async (index) => {
+  const handleDeleteProductImage = async (index, type) => {
+    if(type === "new") {
+      const newProductNewImages = [...data.newImages];
+      newProductNewImages.splice(index, 1);
 
-    const newProductImage = [...data.productImage];
-    newProductImage.splice(index, 1);
+      setData((preve) => {
+        return {
+          ...preve,
+          newImages: [...newProductNewImages]
+        };
+      });
+
+      return
+    }
+
+    const newProductImages = [...data.productImage];
+    const newDeletedImages = [...data.deletedImages, data.productImage[index]];
+
+    newProductImages.splice(index, 1);
 
     setData((preve) => {
       return {
         ...preve,
-        productImage: [...newProductImage],
+        productImage: [...newProductImages],
+        deletedImages: newDeletedImages,
       };
     });
   };
@@ -59,7 +79,7 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(summaryApi.updateProduct.url, {
+    const response = await fetch(`${summaryApi.updateProduct.url}/${data.id}`, {
       method: summaryApi.updateProduct.method,
       credentials: "include",
       headers: {
@@ -82,7 +102,7 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
   };
 
   return (
-    <div className="fixed w-full  h-full bg-slate-200 bg-opacity-35 top-0 left-0 right-0 bottom-0 flex justify-center items-center">
+    <div className="fixed w-full  h-full bg-slate-200 bg-opacity-35 top-0 left-0 right-0 bottom-0 flex justify-center items-center z-30">
       <div className="bg-white p-4 rounded w-full max-w-2xl h-full max-h-[80%] overflow-hidden">
         <div className="flex justify-between items-center pb-3">
           <h2 className="font-bold text-lg">Edit Product</h2>
@@ -134,7 +154,7 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
             onChange={handleOnChange}
             className="p-2 bg-slate-100 border rounded"
           >
-            <option value={""}>Select Category</option>
+            <option value={""}>Seleccionar Categoria</option>
             {productCategory.map((el, index) => {
               return (
                 <option value={el.value} key={el.value + index}>
@@ -163,39 +183,59 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
               </div>
             </div>
           </label>
-          <div>
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* Imágenes antiguas */}
             {data?.productImage[0] ? (
-              <div className="flex items-center gap-2">
-                {data.productImage.map((image, index) => {
-                  return (
-                    <div className="relative group">
-                      <img
-                        src={image.secure_url}
-                        alt={""}
-                        width={80}
-                        height={80}
-                        className="bg-slate-100 border cursor-pointer"
-                        onClick={() => {
-                          setOpenFullScreenImage(true);
-                          setFullScreenImage(image.secure_url);
-                        }}
-                      />
-
-                      <div
-                        className="absolute bottom-0 right-0 p-1 text-white bg-red-600 rounded-full hidden group-hover:block cursor-pointer"
-                        onClick={() => handleDeleteProductImage(index)}
-                      >
-                        <MdDelete />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              data.productImage.map((image, index) => (
+                <div className="relative group" key={image.secure_url}>
+                  <img
+                    src={image.secure_url}
+                    alt=""
+                    width={80}
+                    height={80}
+                    className="bg-slate-100 border cursor-pointer"
+                    onClick={() => {
+                      setOpenFullScreenImage(true);
+                      setFullScreenImage(image.secure_url);
+                    }}
+                  />
+                  <div
+                    className="absolute bottom-0 right-0 p-1 text-white bg-red-600 rounded-full hidden group-hover:block cursor-pointer"
+                    onClick={() => handleDeleteProductImage(index, "old")}
+                  >
+                    <MdDelete />
+                  </div>
+                </div>
+              ))
             ) : (
               <p className="text-red-600 text-xs">
                 *Por favor sube una imagen del producto
               </p>
             )}
+
+            {/* Imágenes nuevas */}
+            {data.newImages[0] &&
+              data.newImages.map((image, index) => (
+                <div className="relative group" key={index}>
+                  <img
+                    src={image}
+                    alt=""
+                    width={80}
+                    height={80}
+                    className="bg-slate-100 border cursor-pointer"
+                    onClick={() => {
+                      setOpenFullScreenImage(true);
+                      setFullScreenImage(image);
+                    }}
+                  />
+                  <div
+                    className="absolute bottom-0 right-0 p-1 text-white bg-red-600 rounded-full hidden group-hover:block cursor-pointer"
+                    onClick={() => handleDeleteProductImage(index, "new")}
+                  >
+                    <MdDelete />
+                  </div>
+                </div>
+              ))}
           </div>
 
           <label htmlFor="price" className="mt-3">

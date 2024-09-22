@@ -11,12 +11,19 @@ import CategoryProducts from "../pages/CategoryProducts";
 import ProductDetails from "../components/ProductDetails";
 import Cart from "../pages/Cart";
 import SearchProducts from "../pages/SearchProducts";
+import Welcome from "../pages/Welcome";
+import AllVisits from "../pages/AllVisits";
+import AllSales from "../pages/AllSales";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+      {
+        path: "welcome",
+        element: <Welcome />
+      },
       {
         path: "",
         element: <Home />,
@@ -61,6 +68,14 @@ const router = createBrowserRouter([
           {
             path: "all-products",
             element: <AllProducts />,
+          },
+          {
+            path: "all-visits",
+            element: <AllVisits />,
+          },
+          {
+            path: "all-sales",
+            element: <AllSales />,
           },
         ],
       },

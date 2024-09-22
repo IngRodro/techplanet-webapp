@@ -4,6 +4,16 @@ import AdminEditProduct from "./AdminEditProduct";
 import displayCurrency from "../helpers/displayCurrency";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import summaryApi from "../common";
+import {
+  Card,
+  CardContent,
+  CardActions,
+  CardMedia,
+  Typography,
+  IconButton,
+  Box,
+  Tooltip,
+} from "@mui/material";
 
 const AdminProductCard = ({ data, fetchdata }) => {
   const [editProduct, setEditProduct] = useState(false);
@@ -28,39 +38,85 @@ const AdminProductCard = ({ data, fetchdata }) => {
   };
 
   return (
-    <div
-      className={`bg-slate-100 p-4 rounded transition-opacity duration-300 ${
+    <Card
+      className={`transition-opacity duration-300 ${
         data.available ? "opacity-100" : "opacity-50"
       }`}
+      sx={{ maxWidth: 250, position: "relative", backgroundColor: "#f8f9fa" }}
     >
-      <div className="w-40 relative">
-        <div
-          className="absolute top-0 left-0 p-2 bg-red-100 rounded-full hover:bg-red-700 hover:text-white cursor-pointer z-10"
-          onClick={changeAvailability}
-        >
-          {data.available ? <FaEye /> : <FaEyeSlash />}
-        </div>
-
-        <div className="w-32 h-32 flex justify-center items-center">
-          <img
-            src={data?.productImages[0].secure_url}
-            alt={data?.name}
-            className="mx-auto object-fill h-full"
-          />
-        </div>
-        <h1 className="text-ellipsis line-clamp-2">{data.productName}</h1>
-
-        <div>
-          <p className="font-semibold">{displayCurrency(data.sellingPrice)}</p>
-
-          <div
-            className="w-fit ml-auto p-2 bg-green-100 hover:bg-green-600 rounded-full hover:text-white cursor-pointer"
-            onClick={() => setEditProduct(true)}
+      <Box position="absolute" top={10} left={10}>
+        <Tooltip title={data.available ? "Make Unavailable" : "Make Available"}>
+          <IconButton
+            onClick={changeAvailability}
+            sx={{
+              backgroundColor: data.available ? "#f28b82" : "#81c995",
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: data.available ? "#c62828" : "#2e7d32",
+              },
+            }}
           >
-            <MdModeEditOutline />
-          </div>
-        </div>
-      </div>
+            {data.available ? <FaEye /> : <FaEyeSlash />}
+          </IconButton>
+        </Tooltip>
+      </Box>
+
+      <Box
+        sx={{
+          width: "100%",
+          height: 180, // Tamaño uniforme para todas las imágenes
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          overflow: "hidden", // Evita que las imágenes más grandes sobresalgan
+        }}
+      >
+        <CardMedia
+          component="img"
+          image={data?.productImages[0].secure_url}
+          alt={data?.name}
+          sx={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain", // Asegura que las imágenes mantengan sus proporciones sin estirarse
+          }}
+        />
+      </Box>
+
+      <CardContent>
+        <Typography
+          variant="h6"
+          component="div"
+          noWrap
+          sx={{
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {data.productName}
+        </Typography>
+
+        <Typography variant="body2" color="text.secondary">
+          {displayCurrency(data.sellingPrice)}
+        </Typography>
+      </CardContent>
+
+      <CardActions>
+        <IconButton
+          onClick={() => setEditProduct(true)}
+          sx={{
+            marginLeft: "auto",
+            backgroundColor: "#81c995",
+            "&:hover": {
+              backgroundColor: "#2e7d32",
+              color: "#fff",
+            },
+          }}
+        >
+          <MdModeEditOutline />
+        </IconButton>
+      </CardActions>
 
       {editProduct && (
         <AdminEditProduct
@@ -69,7 +125,7 @@ const AdminProductCard = ({ data, fetchdata }) => {
           fetchdata={fetchdata}
         />
       )}
-    </div>
+    </Card>
   );
 };
 
